@@ -1,0 +1,5 @@
+
+how to use the mouse: https://nerdcave.xyz/docs/tutorials/joystick-mouse/
+important keyboard links:
+https://github.com/KMKfw/kmk_firmware/blob/main/docs/en/Getting_Started.md
+https://github.com/KMKfw/kmk_firmware/blob/main/docs/en/layers.md
