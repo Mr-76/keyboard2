@@ -1,5 +1,3 @@
-print("Starting")
-
 import board
 import busio, displayio, os, terminalio
 import adafruit_displayio_ssd1306
@@ -11,13 +9,18 @@ from kmk.keys import KC
 from kmk.scanners import DiodeOrientation
 
 
+displayio.release_displays()
+sda, scl = board.GP14, board.GP15
+i2c = busio.I2C(scl, sda)
+display_bus = displayio.I2CDisplay(i2c, device_address=0x3C)
+display = adafruit_displayio_ssd1306.SSD1306(display_bus, width=128, height=32)
+
+#######################3
 keyboard = KMKKeyboard()
 macros = Macros()
 keyboard.modules.append(macros)
-
 keyboard.row_pins = (board.GP0,board.GP1,board.GP2,board.GP3,board.GP4,)
 keyboard.col_pins = (board.GP5,board.GP6,board.GP7,board.GP8,board.GP9,board.GP10,board.GP11,board.GP12,board.GP17,board.GP18,board.GP19,board.GP20,board.GP21,)
-
 keyboard.modules.append(Layers())
 
 WOW = KC.MACRO("A new terror born in death, a new superstition entering the unassailable fortress of forever.I am legend.")
@@ -44,10 +47,6 @@ keyboard.keymap = [
 
 ]
 
-#
-#keyboard.keymap = [
-#    [KC.A,]
-#]
 
 if __name__ == '__main__':
     keyboard.go()
