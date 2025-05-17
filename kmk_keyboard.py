@@ -30,10 +30,12 @@ select.pull = digitalio.Pull.UP
 
 pot_min = 0.00
 pot_max = 3.29
-step = (pot_max - pot_min) / 20.0
+step = (pot_max - pot_min) / 22
+
 
 def get_voltage(pin):
-    return (pin.value * 3.3) / 65536
+    return (pin.value * 3.29) / 65536
+
 
 def steps(axis):
     """ Maps the potentiometer voltage range to 0-20 """
@@ -471,8 +473,12 @@ class KMKKeyboard:
                 secondary_hid_type=secondary_hid_type,
                 **kwargs,
             )
+            start_time = time.monotonic()
             while True:
+                elapsed = time.monotonic() - start_time
+                print("Uptime", int(elapsed / 60))
                 self._main_loop()
+
                 x_steps = steps(get_voltage(x_axis))
                 y_steps = steps(get_voltage(y_axis))
 
@@ -480,21 +486,21 @@ class KMKKeyboard:
                     mouse.click(Mouse.LEFT_BUTTON)
                    # time.sleep(0.2)  # Debounce delay
                 if x_steps > 19.0:
-                    mouse.move(x=12)
+                    mouse.move(x=20)
                 if x_steps > 11.0:
                     mouse.move(x=1)
                 if x_steps < 9.0:
                     mouse.move(x=-1)
                 if x_steps < 7.0:
-                    mouse.move(x=-12)
+                    mouse.move(x=-20)
                 if y_steps > 19.0:
-                    mouse.move(y=-12)
+                    mouse.move(y=-20)
                 if y_steps > 11.0:
                     mouse.move(y=-1)
-                if y_steps < 9.0:
+                if 1 < y_steps < 9.0:
                     mouse.move(y=1)
                 if y_steps < 1.0:
-                    mouse.move(y=12)
+                    mouse.move(y=20)
 
         except Exception as err:
             import traceback
